@@ -15,10 +15,12 @@ export const handlers = [
     return HttpResponse.json({ user })
   }),
   http.post('https://example.com/user', async ({request}) => {
-    const { firstName } = await request.json()
+    const { firstName, dateOfBirth, lastName } = await request.json()
     await db.user.create({
       firstName,
-      id: faker.string.uuid()
+      id: faker.string.uuid(),
+      dateOfBirth,
+      lastName
     });
 
     // check if user name already exists
@@ -31,7 +33,7 @@ export const handlers = [
   }),
   http.put('https://example.com/user/:id', async ({request, params}) => {
     const { id } = params;
-    const { firstName } = await request.json()
+    const { firstName, dateOfBirth, lastName } = await request.json()
 
     const user = await db.user.findFirst({ id });
     if (!user) {
@@ -48,7 +50,7 @@ export const handlers = [
           equals: id,
         },
       },
-      data: { firstName }
+      data: { firstName, lastName, dateOfBirth }
     });
 
     return HttpResponse.json(`User ${id} edited`, {
