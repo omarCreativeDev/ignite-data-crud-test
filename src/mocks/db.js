@@ -7,7 +7,8 @@ export const db = factory({
   user: {
     // ...with these properties and value getters.
     id: primaryKey(faker.string.uuid()),
-    firstName: () => 'John',
-    lastName: () => 'Maverick',
+    firstName: () => undefined,
+    lastName: () => 'Last name',
+    dateOfBirth: () => Date.now(),
   },
 })
