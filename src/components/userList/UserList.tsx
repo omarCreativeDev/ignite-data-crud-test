@@ -19,7 +19,11 @@ import { UserForm } from '../userForm/UserForm';
 
 export function UserList() {
   const [openModal, setOpenModal] = useState(false);
-  const handleOpenModal = () => setOpenModal(true);
+  const [userEditId, setUserEditId] = useState('');
+  const handleOpenModal = (id: string) => {
+    setUserEditId(id);
+    setOpenModal(true);
+  };
   const { data, isFetching, isError } = useGetUsers();
   const deleteUser = useDeleteUser();
   const { status, mutateAsync } = useUpdateUser();
@@ -55,14 +59,16 @@ export function UserList() {
                 <TableCell>{dayjs(dateOfBirth).format('DD/MM/YYYY')}</TableCell>
                 <TableCell>
                   <IconButton>
-                    <EditIcon onClick={handleOpenModal} />
-                    <UserForm
-                      openModal={openModal}
-                      setOpenModal={setOpenModal}
-                      handleMutation={handleMutation}
-                      status={status}
-                      user={user}
-                    />
+                    <EditIcon onClick={() => handleOpenModal(id)} />
+                    {userEditId === id ? (
+                      <UserForm
+                        openModal={openModal}
+                        setOpenModal={setOpenModal}
+                        handleMutation={handleMutation}
+                        status={status}
+                        user={user}
+                      />
+                    ) : null}
                   </IconButton>
                   <IconButton onClick={() => deleteUser.mutate(id)}>
                     <DeleteIcon />

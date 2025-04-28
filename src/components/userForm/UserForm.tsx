@@ -23,7 +23,7 @@ export function UserForm({ openModal, setOpenModal, handleMutation, status, user
     e.preventDefault();
     setIsPristine(false);
 
-    if (lastName.trim().length && !isFutureDate(dateOfBirth)) {
+    if (lastName.trim().length && !isFutureDate()) {
       handleMutation({ ...user, firstName, lastName, dateOfBirth });
       handleCloseModal();
       resetForm();
@@ -42,12 +42,15 @@ export function UserForm({ openModal, setOpenModal, handleMutation, status, user
     resetForm();
   };
 
-  const isFutureDate = (date: string) => {
-    return dayjs(date).isAfter(dayjs(), 'day');
-  };
-
   const isLastNameInValid = !isPristine && !lastName.trim().length;
-  const isDobInValid = isFutureDate(dateOfBirth);
+
+  const isFutureDate = () => dayjs(dateOfBirth).isAfter(dayjs(), 'day');
+  const isDateInvalid = () => !dayjs(dateOfBirth).isValid();
+  const isDobInValid = isFutureDate() || isDateInvalid();
+  const dobErrorMessage = () => {
+    if (isDateInvalid()) return 'Invalid date format';
+    if (isFutureDate()) return 'Date cannot be in the future';
+  };
 
   return (
     <Dialog open={openModal} onClose={handleCloseModal}>
@@ -80,7 +83,7 @@ export function UserForm({ openModal, setOpenModal, handleMutation, status, user
             fullWidth
             margin="normal"
             error={isDobInValid}
-            helperText={isDobInValid ? 'Date cannot be in the future' : ''}
+            helperText={dobErrorMessage()}
           />
         </Box>
       </DialogContent>
@@ -90,7 +93,7 @@ export function UserForm({ openModal, setOpenModal, handleMutation, status, user
         </Button>
         <Button
           onClick={handleSubmit}
-          disabled={status === 'pending'}
+          disabled={isLastNameInValid || isDobInValid || status === 'pending'}
           variant="contained"
           color="primary"
         >
