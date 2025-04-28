@@ -4,3 +4,7 @@ export interface User {
   lastName: string;
   dateOfBirth: string;
 }
+
+export interface GetUsersResponse {
+  users: User[];
+}

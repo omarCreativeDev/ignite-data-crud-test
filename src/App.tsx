@@ -1,6 +1,7 @@
 import { AppBar, Container, Typography } from '@mui/material';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { CreateUser } from './components/createUser/CreateUser.tsx';
+import { UserList } from './components/userList/UserList.tsx';
 import Styles from './App.module.css';
 
 const queryClient = new QueryClient();
@@ -19,6 +20,9 @@ function App() {
             <CreateUser />
           </Container>
         </AppBar>
+        <Container maxWidth="md">
+          <UserList />
+        </Container>
       </>
     </QueryClientProvider>
   );

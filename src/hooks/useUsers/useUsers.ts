@@ -1,5 +1,5 @@
-import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { createUser } from '../../services/user/service';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { createUser, getUsers } from '../../services/user/service';
 
 export const useCreateUser = () => {
   const queryClient = useQueryClient();
@@ -9,5 +9,12 @@ export const useCreateUser = () => {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['users'] });
     }
+  });
+};
+
+export const useGetUsers = () => {
+  return useQuery({
+    queryKey: ['users'],
+    queryFn: getUsers
   });
 };
