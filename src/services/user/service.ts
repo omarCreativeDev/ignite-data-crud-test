@@ -14,3 +14,7 @@ export const getUsers = async () => {
 export const updateUser = async (id: string, data: Partial<User>) => {
   return await axios.put(`${API_BASE}/${id}`, data);
 };
+
+export const deleteUser = async (id: string) => {
+  return await axios.delete(`${API_BASE}/${id}`);
+};

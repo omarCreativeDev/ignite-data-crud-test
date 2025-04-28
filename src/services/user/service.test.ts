@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { API_BASE } from '../constants';
 import { User } from './interfaces';
-import { createUser, getUsers, updateUser } from './service';
+import { createUser, deleteUser, getUsers, updateUser } from './service';
 
 jest.mock('axios');
 const mockedAxios = axios as jest.Mocked<typeof axios>;
@@ -44,5 +44,15 @@ describe('service tests', () => {
 
     expect(mockedAxios.put).toHaveBeenCalledWith(`${API_BASE}/${userId}`, updatedData);
     expect(result.data).toBe('User updated');
+  });
+
+  it('should delete a user', async () => {
+    const userId = '456';
+    mockedAxios.delete.mockResolvedValueOnce({ data: 'User deleted' });
+
+    const result = await deleteUser(userId);
+
+    expect(mockedAxios.delete).toHaveBeenCalledWith(`${API_BASE}/${userId}`);
+    expect(result.data).toBe('User deleted');
   });
 });

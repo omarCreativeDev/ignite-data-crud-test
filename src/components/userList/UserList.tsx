@@ -9,9 +9,10 @@ import {
   TableContainer,
   Paper
 } from '@mui/material';
+import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
 import { useState } from 'react';
-import { useGetUsers, useUpdateUser } from '../../hooks/useUsers/useUsers';
+import { useDeleteUser, useGetUsers, useUpdateUser } from '../../hooks/useUsers/useUsers';
 import dayjs from 'dayjs';
 import { User } from '../../services/user/interfaces';
 import { UserForm } from '../userForm/UserForm';
@@ -20,6 +21,7 @@ export function UserList() {
   const [openModal, setOpenModal] = useState(false);
   const handleOpenModal = () => setOpenModal(true);
   const { data, isFetching, isError } = useGetUsers();
+  const deleteUser = useDeleteUser();
   const { status, mutateAsync } = useUpdateUser();
 
   const handleMutation = async (user: User) => {
@@ -61,6 +63,9 @@ export function UserList() {
                       status={status}
                       user={user}
                     />
+                  </IconButton>
+                  <IconButton onClick={() => deleteUser.mutate(id)}>
+                    <DeleteIcon />
                   </IconButton>
                 </TableCell>
               </TableRow>
