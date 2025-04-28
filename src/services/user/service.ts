@@ -10,3 +10,7 @@ export const getUsers = async () => {
   const { data } = await axios.get<GetUsersResponse>(API_BASE);
   return data;
 };
+
+export const updateUser = async (id: string, data: Partial<User>) => {
+  return await axios.put(`${API_BASE}/${id}`, data);
+};

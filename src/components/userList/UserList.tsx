@@ -1,18 +1,31 @@
 import {
   CircularProgress,
-  Paper,
+  IconButton,
   Table,
-  TableBody,
-  TableCell,
-  TableContainer,
   TableHead,
-  TableRow
+  TableRow,
+  TableCell,
+  TableBody,
+  TableContainer,
+  Paper
 } from '@mui/material';
+import EditIcon from '@mui/icons-material/Edit';
+import { useState } from 'react';
+import { useGetUsers, useUpdateUser } from '../../hooks/useUsers/useUsers';
 import dayjs from 'dayjs';
-import { useGetUsers } from '../../hooks/useUsers/useUsers';
+import { User } from '../../services/user/interfaces';
+import { UserForm } from '../userForm/UserForm';
 
 export function UserList() {
+  const [openModal, setOpenModal] = useState(false);
+  const handleOpenModal = () => setOpenModal(true);
   const { data, isFetching, isError } = useGetUsers();
+  const { status, mutateAsync } = useUpdateUser();
+
+  const handleMutation = async (user: User) => {
+    await mutateAsync({ id: user?.id || '', data: user });
+    setOpenModal(false);
+  };
 
   if (isFetching) return <CircularProgress />;
   if (isError) return <p>Error loading users</p>;
@@ -38,7 +51,18 @@ export function UserList() {
                 <TableCell>{firstName}</TableCell>
                 <TableCell>{lastName}</TableCell>
                 <TableCell>{dayjs(dateOfBirth).format('DD/MM/YYYY')}</TableCell>
-                <TableCell></TableCell>
+                <TableCell>
+                  <IconButton>
+                    <EditIcon onClick={handleOpenModal} />
+                    <UserForm
+                      openModal={openModal}
+                      setOpenModal={setOpenModal}
+                      handleMutation={handleMutation}
+                      status={status}
+                      user={user}
+                    />
+                  </IconButton>
+                </TableCell>
               </TableRow>
             );
           })}

@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { API_BASE } from '../constants';
 import { User } from './interfaces';
-import { createUser, getUsers } from './service';
+import { createUser, getUsers, updateUser } from './service';
 
 jest.mock('axios');
 const mockedAxios = axios as jest.Mocked<typeof axios>;
@@ -33,5 +33,16 @@ describe('service tests', () => {
 
     expect(mockedAxios.get).toHaveBeenCalledWith(API_BASE);
     expect(result).toEqual(users);
+  });
+
+  it('should update a user', async () => {
+    const userId = '123';
+    const updatedData = { firstName: 'Updated' };
+    mockedAxios.put.mockResolvedValueOnce({ data: 'User updated' });
+
+    const result = await updateUser(userId, updatedData);
+
+    expect(mockedAxios.put).toHaveBeenCalledWith(`${API_BASE}/${userId}`, updatedData);
+    expect(result.data).toBe('User updated');
   });
 });
