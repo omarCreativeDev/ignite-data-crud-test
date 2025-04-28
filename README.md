@@ -1,5 +1,7 @@
 # Ignite Data Crud App test by Omar Mirza
 
+![crud app screenshot](/public/crud-app-screenshot.png)
+
 ## Available Scripts
 
 `prepare`
