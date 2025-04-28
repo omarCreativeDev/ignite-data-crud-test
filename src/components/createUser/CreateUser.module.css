@@ -1,0 +1,11 @@
+.form {
+  .button {
+    background: #fff;
+    color: #000;
+
+    &:hover {
+      background: inherit;
+      color: #fff;
+    }
+  }
+}

@@ -1,23 +1,26 @@
-import { useState } from "react";
-import "./App.css";
+import { AppBar, Container, Typography } from '@mui/material';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { CreateUser } from './components/createUser/CreateUser.tsx';
+import Styles from './App.module.css';
+
+const queryClient = new QueryClient();
 
 function App() {
-  const [count, setCount] = useState(0);
+  const { appBar } = Styles;
 
   return (
-    <>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
+    <QueryClientProvider client={queryClient}>
+      <>
+        <AppBar position="static" sx={{ mb: 4 }}>
+          <Container maxWidth="md" className={appBar}>
+            <Typography variant="h6" component="div">
+              User Management
+            </Typography>
+            <CreateUser />
+          </Container>
+        </AppBar>
+      </>
+    </QueryClientProvider>
   );
 }
 
